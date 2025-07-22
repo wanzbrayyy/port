@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>my portofolio</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/css/shepherd.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/5.1.0/introjs.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/photoswipe.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist/css/iziToast.min.css">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            line-height: 1.6;
+            overflow-x: hidden;
+            opacity: 0; /* Sembunyikan body awal untuk loading */
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        body.loaded {
+            opacity: 1;
+        }
+
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #121212;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+        }
+
+        #loading-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-text-container {
+            text-align: center;
+        }
+
+        #loading-text {
+            font-size: 2rem;
+            color: #50fa7b;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        #transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #121212;
+            z-index: 10000;
+            transform: scaleY(0);
+            transform-origin: bottom;
+        }
+
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        section {
+            padding: 80px 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 1.2rem;
+            color: #50fa7b;
+            text-shadow: 0 0 5px rgba(80, 250, 123, 0.5);
+        }
+        h2 { font-size: 2.5rem; }
+        h3 { font-size: 1.8rem; }
+
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 0;
+            background-color: rgba(20, 20, 20, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        nav.nav-hidden {
+            transform: translateY(-100%);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #bd93f9;
+            text-shadow: 0 0 5px rgba(189, 147, 249, 0.5);
+        }
+         nav .logo i { margin-right: 8px; }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #f8f8f2;
+            font-weight: 500;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+            padding: 5px 0;
+            position: relative;
+        }
+        nav ul li a i { margin-right: 6px; }
+
+        nav ul li a:hover, nav ul li a.active {
+            color: #ff79c6;
+            text-shadow: 0 0 8px rgba(255, 121, 198, 0.6);
+        }
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #ff79c6;
+            transition: width 0.3s ease;
+        }
+        nav ul li a:hover::after, nav ul li a.active::after {
+            width: 100%;
+        }
+        
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+        }
+        .theme-switch {
+            display: inline-block;
+            height: 28px;
+            position: relative;
+            width: 55px;
+            margin-left: 20px;
+        }
+        .theme-switch input {
+            display:none;
+        }
+        .slider {
+            background-color: #44475a;
+            bottom: 0;
+            cursor: pointer;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: .4s;
+        }
+        .slider:before {
+            background-color: #f8f8f2;
+            bottom: 4px;
+            content: "\f185"; 
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            font-size: 16px;
+            color: #282a36;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            position: absolute;
+            transition: .4s;
+        }
+        input:checked + .slider {
+            background-color: #50fa7b;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+            content: "\f186"; 
+        }
+        .slider.round {
+            border-radius: 34px;
+        }
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        body.light-mode {
+            background-color: #f0f0f0;
+            color: #282a36;
+        }
+        body.light-mode nav {
+            background-color: rgba(230, 230, 230, 0.85);
+        }
+        body.light-mode nav .logo {
+            color: #6272a4;
+            text-shadow: none;
+        }
+        body.light-mode nav ul li a {
+            color: #44475a;
+        }
+        body.light-mode nav ul li a:hover, body.light-mode nav ul li a.active {
+            color: #ff5555;
+            text-shadow: 0 0 8px rgba(255, 85, 85, 0.6);
+        }
+        body.light-mode nav ul li a:hover::after, body.light-mode nav ul li a.active::after {
+            background-color: #ff5555;
+        }
+        body.light-mode h1, body.light-mode h2, body.light-mode h3 {
+            color: #ff5555; 
+            text-shadow: 0 0 5px rgba(255, 85, 85, 0.5);
+        }
+        body.light-mode .cta-button {
+            background-color: #ff5555;
+            box-shadow: 0 5px 15px rgba(255, 85, 85, 0.3);
+        }
+        body.light-mode .cta-button:hover {
+             box-shadow: 0 10px 20px rgba(255, 85, 85, 0.4);
+        }
+        body.light-mode .project-card { background-color: #e0e0e0; box-shadow: 0 5px 15px rgba(0,0,0,0.1);}
+        body.light-mode .project-card:hover { box-shadow: 0 15px 30px rgba(0,0,0,0.2);}
+        body.light-mode .project-info h3 { color: #d65d0e; }
+        body.light-mode .certificate-card { background-color: #e0e0e0; box-shadow: 0 5px 15px rgba(0,0,0,0.1);}
+        body.light-mode .certificate-card:hover { box-shadow: 0 15px 30px rgba(0,0,0,0.2);}
+        body.light-mode .certificate-info h3 { color: #d65d0e; }
+        body.light-mode .modal-content { background-color: #f0f0f0; color: #282a36;}
+        body.light-mode .modal-content h2 { color: #ff5555; }
+        body.light-mode .skill-item { background-color: #d9d9d9; color: #282a36;}
+        body.light-mode .skill-item i { color: #ff5555; }
+        body.light-mode .skill-item:hover { background-color: #c4c4c4; }
+        body.light-mode #contact input, body.light-mode #contact textarea { background-color: #e0e0e0; color: #282a36; border: 1px solid #c4c4c4;}
+        body.light-mode #contact input::placeholder, body.light-mode #contact textarea::placeholder { color: #6272a4; }
+        body.light-mode #contact button { background-color: #ff5555; color: #f8f8f2;}
+        body.light-mode #contact button:hover { background-color: #e04040;}
+
+
+        #hero {
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, #1f1f2e 0%, #2c2c44 100%);
+        }
+        body.light-mode #hero {
+             background: linear-gradient(135deg, #e0e0ff 0%, #c0c0f0 100%);
+        }
+
+        #hero h1 {
+            font-size: 3.5rem;
+            color: #f8f8f2;
+            text-shadow: 0 0 10px rgba(248, 248, 242, 0.5);
+        }
+        body.light-mode #hero h1 { color: #282a36; text-shadow: 0 0 10px rgba(40, 42, 54, 0.3);}
+
+        .hero-subtitle {
+            font-size: 1.6rem;
+            color: #8be9fd;
+            margin-bottom: 2.5rem;
+            text-shadow: 0 0 5px rgba(139, 233, 253, 0.5);
+        }
+        body.light-mode .hero-subtitle { color: #4d4dff; text-shadow: 0 0 5px rgba(77, 77, 255, 0.5);}
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 35px;
+            background: linear-gradient(135deg, #50fa7b, #3ddc84);
+            color: #282a36;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(80, 250, 123, 0.4);
+        }
+        .cta-button i { margin-right: 8px; }
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(80, 250, 123, 0.6);
+        }
+        
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+        #hero .container { position: relative; z-index: 1; }
+
+
+        #about .container {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        #about img.profile-pic {
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 7px solid #bd93f9;
+            box-shadow: 0 0 25px rgba(189, 147, 249, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        #about img.profile-pic:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 35px rgba(189, 147, 249, 0.7);
+        }
+        #about .about-content {
+            flex: 1;
+        }
+        #about .about-content p { font-size: 1.1rem; margin-bottom: 1rem;}
+
+        #projects .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+        }
+        .project-card {
+            background-color: #282a36;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+        .project-card:hover {
+            transform: translateY(-12px) scale(1.03);
+            box-shadow: 0 18px 40px rgba(0,0,0,0.5);
+        }
+        .project-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .project-card:hover img {
+            transform: scale(1.05);
+        }
+        .project-info {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .project-info h3 {
+            color: #f1fa8c;
+            margin-bottom: 0.8rem;
+        }
+        .project-tags { margin-top: 15px;}
+        .project-tags span {
+            background-color: #44475a;
+            color: #e0e0e0;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            margin-right: 8px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+        .project-tags span i { margin-right: 5px; }
+
+        .certificate-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+        }
+
+        .certificate-card {
+            background-color: #282a36;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .certificate-card:hover {
+            transform: translateY(-12px) scale(1.03);
+            box-shadow: 0 18px 40px rgba(0,0,0,0.5);
+        }
+
+        .certificate-card img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .certificate-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .certificate-info {
+            padding: 25px;
+            flex-grow: 1;
+        }
+
+        .certificate-info h3 {
+            color: #f1fa8c;
+            margin-bottom: 0.8rem;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background-color: #282a36;
+            margin: auto;
+            padding: 35px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 750px;
+            border-radius: 15px;
+            position: relative;
+            color: #f8f8f2;
+            box-shadow: 0 0 30px rgba(0,0,0,0.7);
+            animation: modalOpen 0.5s ease-out;
+        }
+        @keyframes modalOpen {
+            from { opacity: 0; transform: scale(0.9) translateY(-20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-content h2 { color: #50fa7b; margin-bottom: 20px; }
+        .modal-content img { width: 100%; border-radius: 8px; margin-bottom: 20px;}
+        .modal-content p { margin-bottom: 15px; font-size: 1.05rem;}
+        .modal-buttons .cta-button { margin-top: 15px; margin-right: 10px; }
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 32px;
+            font-weight: bold;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: #ff79c6;
+            text-decoration: none;
+            cursor: pointer;
+            transform: rotate(90deg);
+        }
+
+        #skills .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+        }
+        .skill-item {
+            background-color: #44475a;
+            padding: 20px 30px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .skill-item i {
+            font-size: 1.8em;
+            margin-right: 15px;
+            color: #50fa7b;
+            transition: transform 0.3s ease;
+        }
+        .skill-item:hover {
+            transform: translateY(-5px) scale(1.05);
+            background-color: #6272a4;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .skill-item:hover i {
+            transform: scale(1.1) rotate(-5deg);
+        }
+        .skill-item .fa-html5 { color: #E34F26; }
+        .skill-item .fa-css3-alt { color: #1572B6; }
+        .skill-item .fa-js-square { color: #F7DF1E; }
+        .skill-item .fa-react { color: #61DAFB; }
+        .skill-item .fa-vuejs { color: #4FC08D; }
+        .skill-item .fa-node-js { color: #339933; }
+        .skill-item .fa-python { color: #3776AB; }
+        .skill-item .fa-figma { color: #F24E1E; }
+        .skill-item .fa-git-alt { color: #F05032; }
+        .skill-item .fa-github { color: #f8f8f2; }
+        body.light-mode .skill-item .fa-github { color: #181717; }
+        .skill-item .fa-terminal { color: #8be9fd; } /* EJS icon color */
+        .skill-item .fa-cuttlefish { color: #00599C; } /* C++ icon color (example) */
+        .skill-item .fa-microsoft { color: #00A4EF; } /* C# icon color (example) */
+
+
+
+        #contact form {
+            display: flex;
+            flex-direction: column;
+            max-width: 650px;
+            width: 100%;
+            gap: 20px;
+        }
+        #contact input, #contact textarea {
+            padding: 18px;
+            border-radius: 8px;
+            border: 1px solid #44475a;
+            background-color: #282a36;
+            color: #f8f8f2;
+            font-size: 1.05rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        #contact input:focus, #contact textarea:focus {
+            outline: none;
+            border-color: #bd93f9;
+            box-shadow: 0 0 10px rgba(189, 147, 249, 0.5);
+        }
+        #contact input::placeholder, #contact textarea::placeholder {
+            color: #9a9a9a;
+        }
+        #contact button {
+            padding: 18px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #ff79c6, #ff55b8);
+            color: #f8f8f2;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 121, 198, 0.4);
+        }
+        #contact button i { margin-right: 8px; }
+        #contact button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 121, 198, 0.6);
+        }
+        #form-status { margin-top: 20px; text-align:center; font-size: 1.1rem; }
+
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background-color: #0a0a0a;
+            font-size: 0.95rem;
+        }
+        footer p .fa-heart { color: #ff5555; }
+        .social-icons { margin-top: 15px; }
+        .social-icons a {
+            color: #bd93f9;
+            font-size: 1.8rem;
+            margin: 0 12px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: #ff79c6;
+            transform: scale(1.2);
+        }
+        body.light-mode footer { background-color: #d0d0d0; }
+        body.light-mode .social-icons a { color: #6272a4; }
+        body.light-mode .social-icons a:hover { color: #ff5555; }
+
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            html { font-size: 14px; }
+            nav .container { flex-direction: column; }
+            nav ul { margin-top: 15px; }
+            nav ul li { margin: 0 12px; }
+            #hero h1 { font-size: 2.8rem; }
+            .hero-subtitle { font-size: 1.3rem; }
+            #about .container { flex-direction: column; text-align: center;}
+            #about img.profile-pic { margin-bottom: 30px; width: 250px; height: 250px;}
+            .theme-switch-wrapper { margin-top: 15px; }
+            h2 { font-size: 2rem; }
+            h3 { font-size: 1.5rem; }
+            section { padding: 60px 0; }
+        }
+    </style>
+</head>
+<body>
+    <div id="transition-overlay"></div>
+    <div id="loading-overlay">
+        <div class="loading-text-container">
+            <span id="loading-text"></span>
+        </div>
+    </div>
+
+    <audio id="background-music" loop>
+        <source src="https://files.catbox.moe/yizd1x.mp3" type="audio/mpeg">
+        Browser Anda tidak mendukung elemen audio.
+    </audio>
+
+    <div id="main-content" style="visibility: hidden;">
+        <nav id="main-navbar">
+            <div class="container">
+                <a href="#hero" class="logo"><i class="fas fa-terminal"></i>awan berlian</a>
+                <ul>
+                    <li><a href="#hero" class="active"><i class="fas fa-home"></i>home</a></li>
+                    <li><a href="#about"><i class="fas fa-user-circle"></i>tentang</a></li>
+                    <li><a href="#projects"><i class="fas fa-laptop-code"></i>proyek</a></li>
+                    <li><a href="#certificates"><i class="fas fa-certificate"></i>Sertifikat</a></li>
+                    <li><a href="#skills"><i class="fas fa-cogs"></i>my-skill</a></li>
+                    <li><a href="#contact"><i class="fas fa-envelope"></i>kontak</a></li>
+                </ul>
+                <div class="theme-switch-wrapper">
+                    <label class="theme-switch" for="checkbox">
+                        <input type="checkbox" id="checkbox" />
+                        <div class="slider round"></div>
+                    </label>
+                </div>
+            </div>
+        </nav>
+
+        <section id="hero">
+            <div id="particles-js"></div>
+            <div class="container">
+                <h1>halo, saya <span class="typed-text"></span></h1>
+                <p class="hero-subtitle">seorang pengembang website dengan berbagai metode saya lakukan.</p>
+                <a href="#projects" class="cta-button"><i class="fas fa-rocket"></i>lihat karya saya</a>
+            </div>
+        </section>
+        <section id="about" class="reveal">
+            <div class="container">
+                <img src="https://files.catbox.moe/qvexut.jpg" alt="awan berlian" class="profile-pic">
+                <div class="about-content">
+                    <h2><i class="fas fa-id-card"></i> about me</h2>
+                    <p>saya adalah seorang mahasiswa yang memiliki passion mendalam di bidang pengembangan web dan cyber antarmuka pengguna. Saya selalu bersemangat untuk mempelajari teknologi baru dan meningkatkan kemampuan saya dalam mengembangkan aplikasi web yang inovatif dan user-friendly. Saya memiliki minat yang kuat dalam menciptakan pengalaman pengguna yang optimal dan memecahkan masalah-masalah kompleks dalam pengembangan web.</p>
+                    <p>berkomitmen dalam mengasah kemampuan yang saya pelajari di setiap kemampuan saya.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="reveal">
+            <div class="container">
+                <h2><i class="fas fa-tasks"></i> proyek terbaru Saya</h2>
+                <div class="project-grid">
+                    <div class="project-card" data-modal-target="modal1">
+                        <img src="https://files.catbox.moe/2q1mhu.jpg" alt="komunitas-wfc">
+                        <div class="project-info">
+                            <div>
+                                <h3>komunitas efc</h3>
+                                <p>deskripsi singkat
+                                saya ingin menciptakan dunia terbaru seperti aplikasi chat via web.</p>
+                            </div>
+                            <div class="project-tags">
+                                <span><i class="fab fa-html5"></i>EJS</span> <span><i class="fab fa-css3-alt"></i>CSS</span> <span><i class="fab fa-node-js"></i>node-js</span> <span><i class="fas fa-cogs"></i>API</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card" data-modal-target="modal2">
+                        <img src="https://files.catbox.moe/dz69ht.jpg" alt="reseller pterodactl">
+                        <div class="project-info">
+                            <div>
+                                <h3>resller pterodactl</h3>
+                                <p>saya menggunakan nodejs MongoDB dan api unttuk menciptakan sebuah ilustraso seperti panel pterodactl.</p>
+                            </div>
+                            <div class="project-tags">
+                                <span><i class="fab fa-react"></i>React</span> <span><i class="fab fa-node-js"></i>Node.js</span> <span><i class="fas fa-database"></i>DB</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="certificates" class="reveal">
+            <div class="container">
+                <h2><i class="fas fa-certificate"></i> sertifikat Saya</h2>
+                <div class="certificate-grid">
+                    <div class="certificate-card">
+                        <img src="https://files.catbox.moe/i7e9mf.jpg" alt="Sertifikat">
+                        <div class="certificate-info">
+                            <h3>Sertifikat Kelulusan</h3>
+                            <p>sertifikat ini menunjukkan penyelesaian kursus cryptography</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="modal1" class="modal">
+            <div class="modal-content">
+                <span class="close-button">×</span>
+                <h2><i class="fas fa-lightbulb"></i>komunitas wfc</h2>
+                <img src="https://files.catbox.moe/2q1mhu.jpg" alt="komunitas-wfc">
+                <p>deskripsi lebih detail
+                saya membuat sebuah aplikasi seperti ini membutuhkan rintangan speerti error, stuck, dan masih banyak lagi</p>
+                <p><strong>teknologi:</strong> EJS, NODEJS,font-awesome, aimasi CSS, dll.</p>
+                <div class="modal-buttons">
+                    <a href="https://komunitas-wfc.up.railway.app" target="_blank" class="cta-button"><i class="fas fa-external-link-alt"></i>live Demo</a>
+                    <a href="#" target="_blank" class="cta-button" style="background: linear-gradient(135deg, #8be9fd, #73cff2);"><i class="fab fa-github"></i>lihat Kode</a>
+                </div>
+            </div>
+        </div>
+        <div id="modal2" class="modal">
+            <div class="modal-content">
+                <span class="close-button">×</span>
+                <h2><i class="fas fa-mobile-alt"></i> reseller pterodactl</h2>
+                <img src="https://files.catbox.moe/dz69ht.jpg" alt="reseller pterodactl">
+                <p>proyek ini dirancang untuk memberikan pengalaman pengguna yang seamless dan visual yang memukau. Fokus pada performa, aksesibilitas, dan interaksi mikro yang cerdas.</p>
+                <p><strong>Teknologi:</strong> React, Node.js, Express, MongoDB, GSAP, font awensome.</p>
+                <div class="modal-buttons">
+                     <a href="https://files.catbox.moe/dz69ht.jpg" target="_blank" class="cta-button"><i class="fas fa-external-link-alt"></i>live Demo</a>
+                </div>
+            </div>
+        </div>
+
+        <section id="skills" class="reveal">
+            <div class="container">
+                <h2><i class="fas fa-code"></i> keahlian saya</h2>
+                <div class="skills-container">
+
+                    <div class="skill-item"><i class="fab fa-html5"></i>HTML5</div>
+                    <div class="skill-item"><i class="fab fa-css3-alt"></i>CSS3</div>
+                    <div class="skill-item"><i class="fab fa-js-square"></i>JavaScript</div>
+                    <div class="skill-item"><i class="fas fa-terminal"></i>EJS</div>
+                    <div class="skill-item"><i class="fab fa-cuttlefish"></i>C++</div>
+                    <div class="skill-item"><i class="fab fa-microsoft"></i>C#</div>
+                    <div class="skill-item"><i class="fab fa-react"></i>React.js</div>
+                    <div class="skill-item"><i class="fab fa-vuejs"></i>Vue.js</div>
+                    <div class="skill-item"><i class="fab fa-node-js"></i>Node.js</div>
+                    <div class="skill-item"><i class="fab fa-python"></i>Python</div>
+                    <div class="skill-item"><i class="fab fa-figma"></i>Figma</div>
+                    <div class="skill-item"><i class="fab fa-git-alt"></i>Git</div>
+                    <div class="skill-item"><i class="fab fa-github"></i>GitHub</div>
+                    <div class="skill-item"><i class="fas fa-mobile-alt"></i>Responsive Design</div>
+                    <div class="skill-item"><i class="fas fa-palette"></i>UI/UX Principles</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="reveal">
+            <div class="container">
+                <h2><i class="fas fa-comments"></i> Hubungi Saya</h2>
+                <p>Tertarik untuk berkolaborasi atau punya pertanyaan? Jangan ragu untuk menghubungi saya!</p>
+                <form id="contact-form">
+                    <input type="text" name="name" placeholder="Nama Anda" required>
+                    <input type="email" name="email" placeholder="Email Anda" required>
+                    <textarea name="message" rows="6" placeholder="Pesan Anda" required></textarea>
+                    <button type="submit"><i class="fas fa-paper-plane"></i>Kirim Pesan</button>
+                </form>
+                <div id="form-status"></div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="container">
+                <div class="social-icons">
+                    <a href="https://github.com/wanzofc-tech" target="_blank" title="gitHub"><i class="fab fa-github"></i></a>
+                </div>
+                <p>© <span id="current-year"></span> my portofolio wanzofc <i class="fas fa-heart"></i></p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+
+    <!-- 50 CDN Libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mojs/core"></script>
+    <script src="https://unpkg.com/popmotion/dist/popmotion.global.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.5.2/velocity.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.2.1/fabric.min.js"></script>
+    <script src="https://unpkg.com/konva@8.3.5/konva.min.js"></script>
+    <script src="https://unpkg.com/zdog@1/dist/zdog.dist.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/two.js@0.8.10/build/two.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/kute.js@2.1.2/dist/kute.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vivus@0.4.6/dist/vivus.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/dayjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.28.0/ramda.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.2/underscore-min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mousetrap/1.6.5/mousetrap.min.js"></script>
+    <script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/js/shepherd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/5.1.0/intro.min.js"></script>
+    <script src="https://unpkg.com/preact/dist/preact.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/riot@7.0.4/riot+compiler.min.js"></script>
+    <script src="https://unpkg.com/mithril/mithril.js"></script>
+    <script src="https://unpkg.com/hyperapp"></script>
+    <script src="https://unpkg.com/petite-vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/rellax@1.12.1/rellax.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tilt.js/1.2.1/tilt.jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/photoswipe.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist/js/iziToast.min.js"></script>
+
+    <script>
+        NProgress.start();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingOverlay = document.getElementById('loading-overlay');
+            if (loadingOverlay) {
+                const typed = new Typed('#loading-text', {
+                    strings: ['Memuat aset...', 'Menyiapkan antarmuka...', 'Hampir selesai...'],
+                    typeSpeed: 50,
+                    backSpeed: 25,
+                    loop: true,
+                    smartBackspace: true,
+                });
+            }
+        });
+
+        window.addEventListener('load', function() {
+            NProgress.done();
+            const loadingOverlay = document.getElementById('loading-overlay');
+            if (loadingOverlay) {
+                loadingOverlay.classList.add('hidden');
+            }
+            const mainContent = document.getElementById('main-content');
+            if (mainContent) {
+                mainContent.style.visibility = 'visible';
+                document.body.classList.add('loaded');
+            }
+            initializePageFunctions();
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            runLibraryTests();
+            const mainContent = document.getElementById('main-content');
+            const backgroundMusic = document.getElementById('background-music');
+
+            if (backgroundMusic) {
+                backgroundMusic.play().catch(error => {
+                    console.warn("Autoplay musik diblokir oleh browser (tanpa loading screen). Membutuhkan interaksi pengguna.", error);
+                    document.body.addEventListener('click', () => {
+                        if (backgroundMusic.paused) {
+                            backgroundMusic.play().catch(e => console.error("Gagal memainkan musik setelah klik:", e));
+                        }
+                    }, { once: true });
+                });
+            }
+            document.body.classList.add('loaded'); // Jika tidak ada loading screen, langsung tampilkan
+            if(mainContent) mainContent.style.visibility = 'visible';
+            initializePageFunctions();
+
+
+            function runLibraryTests() {
+                console.log('Menjalankan tes perpustakaan...');
+                try { if (gsap) console.log('GSAP berhasil dimuat'); } catch (e) { console.error('Gagal memuat GSAP'); }
+                try { if (THREE) console.log('Three.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Three.js'); }
+                try { if (d3) console.log('D3.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat D3.js'); }
+                try { if (Chart) console.log('Chart.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Chart.js'); }
+                try { if (anime) console.log('Anime.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Anime.js'); }
+                try { if (mojs) console.log('Mo.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Mo.js'); }
+                try { if (popmotion) console.log('Popmotion berhasil dimuat'); } catch (e) { console.error('Gagal memuat Popmotion'); }
+                try { if (Velocity) console.log('Velocity.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Velocity.js'); }
+                try { if (p5) console.log('p5.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat p5.js'); }
+                try { if (fabric) console.log('Fabric.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Fabric.js'); }
+                try { if (Konva) console.log('Konva.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Konva.js'); }
+                try { if (Zdog) console.log('Zdog berhasil dimuat'); } catch (e) { console.error('Gagal memuat Zdog'); }
+                try { if (Two) console.log('Two.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Two.js'); }
+                try { if (KUTE) console.log('KUTE.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat KUTE.js'); }
+                try { if (Vivus) console.log('Vivus berhasil dimuat'); } catch (e) { console.error('Gagal memuat Vivus'); }
+                try { if (_) console.log('Lodash berhasil dimuat'); } catch (e) { console.error('Gagal memuat Lodash'); }
+                try { if (moment) console.log('Moment.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Moment.js'); }
+                try { if (dayjs) console.log('Day.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Day.js'); }
+                try { if (numeral) console.log('Numeral.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Numeral.js'); }
+                try { if (accounting) console.log('Accounting.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Accounting.js'); }
+                try { if (R) console.log('Ramda berhasil dimuat'); } catch (e) { console.error('Gagal memuat Ramda'); }
+                try { if (_) console.log('Underscore.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Underscore.js'); }
+                try { if (Swal) console.log('SweetAlert2 berhasil dimuat'); } catch (e) { console.error('Gagal memuat SweetAlert2'); }
+                try { if (Toastify) console.log('Toastify JS berhasil dimuat'); } catch (e) { console.error('Gagal memuat Toastify JS'); }
+                try { if (ClipboardJS) console.log('Clipboard.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Clipboard.js'); }
+                try { if (Howler) console.log('Howler.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Howler.js'); }
+                try { if (Mousetrap) console.log('Mousetrap berhasil dimuat'); } catch (e) { console.error('Gagal memuat Mousetrap'); }
+                try { if (hotkeys) console.log('Hotkeys.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Hotkeys.js'); }
+                try { if (Shepherd) console.log('Shepherd.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Shepherd.js'); }
+                try { if (introJs) console.log('Intro.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Intro.js'); }
+                try { if (jQuery) console.log('jQuery berhasil dimuat'); } catch (e) { console.error('Gagal memuat jQuery'); }
+                try { if (preact) console.log('Preact berhasil dimuat'); } catch (e) { console.error('Gagal memuat Preact'); }
+                try { if (Alpine) console.log('Alpine.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Alpine.js'); }
+                try { if (riot) console.log('Riot.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Riot.js'); }
+                try { if (m) console.log('Mithril.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Mithril.js'); }
+                try { if (hyperapp) console.log('Hyperapp berhasil dimuat'); } catch (e) { console.error('Gagal memuat Hyperapp'); }
+                try { if (PetiteVue) console.log('petite-vue berhasil dimuat'); } catch (e) { console.error('Gagal memuat petite-vue'); }
+                try { if (Parallax) console.log('Parallax.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Parallax.js'); }
+                try { if (Rellax) console.log('Rellax.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Rellax.js'); }
+                try { if ($.fn.tilt) console.log('Tilt.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Tilt.js'); }
+                try { if (Sortable) console.log('SortableJS berhasil dimuat'); } catch (e) { console.error('Gagal memuat SortableJS'); }
+                try { if (Hammer) console.log('Hammer.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat Hammer.js'); }
+                try { if (fullpage) console.log('FullPage.js berhasil dimuat'); } catch (e) { console.error('Gagal memuat FullPage.js'); }
+                try { if (Swiper) console.log('Swiper berhasil dimuat'); } catch (e) { console.error('Gagal memuat Swiper'); }
+                try { if ($.fn.slick) console.log('Slick Carousel berhasil dimuat'); } catch (e) { console.error('Gagal memuat Slick Carousel'); }
+                try { if (PhotoSwipe) console.log('Photoswipe berhasil dimuat'); } catch (e) { console.error('Gagal memuat Photoswipe'); }
+                try { if (lightbox) console.log('Lightbox2 berhasil dimuat'); } catch (e) { console.error('Gagal memuat Lightbox2'); }
+                try {
+                    if (iziToast) {
+                        console.log('iziToast berhasil dimuat');
+                        iziToast.success({ title: 'OK', message: 'Semua 50+ pustaka berhasil dimuat!' });
+                    }
+                } catch (e) {
+                    console.error('Gagal memuat iziToast');
+                }
+            }
+            function initializePageFunctions() {
+                const navElement = document.getElementById('main-navbar');
+                let lastScrollY = window.scrollY;
+
+                if (navElement) {
+                    window.addEventListener('scroll', () => {
+                        const currentScrollY = window.scrollY;
+                        const navHeight = navElement.offsetHeight;
+
+                        if (currentScrollY > lastScrollY && currentScrollY > navHeight) {
+                            navElement.classList.add('nav-hidden');
+                        } else if (currentScrollY < lastScrollY || currentScrollY <= navHeight / 2 ) {
+                            navElement.classList.remove('nav-hidden');
+                        }
+                        lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
+                    });
+                }
+
+                const navLinks = document.querySelectorAll('nav ul li a');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        navLinks.forEach(nav => nav.classList.remove('active'));
+                        this.classList.add('active');
+                    });
+                });
+
+                const sections = document.querySelectorAll('section');
+                const navHeightForActiveLink = navElement ? navElement.offsetHeight : 70;
+                window.addEventListener('scroll', () => {
+                    let current = '';
+                    sections.forEach(section => {
+                        const sectionTop = section.offsetTop;
+                        const sectionHeight = section.clientHeight;
+                        if (pageYOffset >= (sectionTop - sectionHeight / 3 - navHeightForActiveLink)) {
+                            current = section.getAttribute('id');
+                        }
+                    });
+
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href').substring(1) === current) {
+                            link.classList.add('active');
+                        }
+                    });
+                    if (pageYOffset < sections[0].offsetTop - navHeightForActiveLink) {
+                        navLinks.forEach(link => link.classList.remove('active'));
+                        const homeLink = document.querySelector('nav ul li a[href="#hero"]');
+                        if(homeLink) homeLink.classList.add('active');
+                    }
+                });
+
+                const themeToggle = document.getElementById('checkbox');
+                const currentTheme = localStorage.getItem('theme');
+
+                function applyTheme(theme) {
+                    if (theme === 'light-mode') {
+                        document.body.classList.add('light-mode');
+                        document.body.classList.remove('dark-mode');
+                        if(themeToggle) themeToggle.checked = true;
+                    } else {
+                        document.body.classList.add('dark-mode');
+                        document.body.classList.remove('light-mode');
+                        if(themeToggle) themeToggle.checked = false;
+                    }
+                }
+
+                if (currentTheme) {
+                    applyTheme(currentTheme);
+                } else {
+                    applyTheme('dark-mode'); 
+                }
+
+                if(themeToggle){
+                    themeToggle.addEventListener('change', function() {
+                        const newTheme = this.checked ? 'light-mode' : 'dark-mode';
+                        const overlay = document.getElementById('transition-overlay');
+                        const tl = gsap.timeline();
+
+                        tl.to(overlay, {
+                            duration: 0.5,
+                            scaleY: 1,
+                            transformOrigin: 'top',
+                            ease: 'power4.inOut'
+                        }).call(applyTheme, [newTheme])
+                          .call(() => localStorage.setItem('theme', newTheme))
+                          .to(overlay, {
+                            duration: 0.5,
+                            scaleY: 0,
+                            transformOrigin: 'bottom',
+                            ease: 'power4.inOut',
+                            delay: 0.2
+                        });
+                    });
+                }
+                
+
+                if (typeof Typed !== 'undefined') {
+                    const typed = new Typed('.typed-text', {
+                        strings: ["awan berlian", "adalah pengembang web developer"],
+                        typeSpeed: 80,
+                        backSpeed: 50,
+                        loop: true,
+                        smartBackspace: true,
+                        backDelay: 1500,
+                    });
+                } else {
+                    const typedTextElement = document.querySelector('.typed-text');
+                    if(typedTextElement) typedTextElement.textContent = "awan berlian";
+                }
+
+                if (typeof particlesJS !== 'undefined') {
+                    const particleColor = getComputedStyle(document.documentElement).getPropertyValue('--particle-color') || (document.body.classList.contains('light-mode') ? '#4d4dff' : '#50fa7b');
+                    const lineColor = getComputedStyle(document.documentElement).getPropertyValue('--line-color') || (document.body.classList.contains('light-mode') ? '#7a7aff' : '#8be9fd');
+
+                    particlesJS('particles-js', {
+                        "particles": {
+                            "number": { "value": 60, "density": { "enable": true, "value_area": 800 }},
+                            "color": { "value": particleColor },
+                            "shape": { "type": "circle" },
+                            "opacity": { "value": 0.6, "random": true, "anim": { "enable": true, "speed": 0.5, "opacity_min": 0.1, "sync": true }},
+                            "size": { "value": 3, "random": true, "anim": { "enable": true, "speed": 40, "size_min": 0.1, "sync": true }},
+                            "line_linked": { "enable": true, "distance": 150, "color": lineColor, "opacity": 0.4, "width": 1},
+                            "move": { "enable": true, "speed": 2.5, "direction": "none", "random": true, "straight": true, "out_mode": "out", "bounce": true, "attract": { "enable": true, "rotateX": 600, "rotateY": 1200 }}
+                        },
+                        "interactivity": {
+                            "detect_on": "canvas",
+                            "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true},
+                            "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 1 } }, "bubble": { "distance": 400, "size": 40, "duration": 2, "opacity": 8, "speed": 3 }, "repulse": { "distance": 200, "duration": 0.4 }, "push": { "particles_nb": 4 }, "remove": { "particles_nb": 2 }}
+                        },
+                        "retina_detect": true
+                    });
+                }
+
+                const revealElements = document.querySelectorAll('.reveal');
+                const observerOptions = {
+                    root: null,
+                    rootMargin: '0px',
+                    threshold: 0.1 
+                };
+
+                const observer = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, observerOptions);
+
+                revealElements.forEach(el => {
+                    observer.observe(el);
+                });
+
+
+                const projectCards = document.querySelectorAll('.project-card');
+                const modals = document.querySelectorAll('.modal');
+                const closeButtons = document.querySelectorAll('.close-button');
+
+                projectCards.forEach(card => {
+                    card.addEventListener('click', () => {
+                        const modalId = card.getAttribute('data-modal-target');
+                        const modal = document.getElementById(modalId);
+                        if (modal) {
+                            modal.style.display = "flex";
+                            document.body.style.overflow = 'hidden';
+                        }
+                    });
+                });
+
+                function closeModal(modal) {
+                    if (modal) {
+                        modal.style.display = "none";
+                        document.body.style.overflow = 'auto';
+                    }
+                }
+
+                closeButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        closeModal(button.closest('.modal'));
+                    });
+                });
+
+                window.addEventListener('click', (event) => {
+                    modals.forEach(modal => {
+                        if (event.target == modal) {
+                            closeModal(modal);
+                        }
+                    });
+                });
+                window.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape') {
+                        modals.forEach(modal => {
+                            if (modal.style.display === 'flex') {
+                                closeModal(modal);
+                            }
+                        });
+                    }
+                });
+                
+                const contactForm = document.getElementById('contact-form');
+                const formStatus = document.getElementById('form-status');
+
+                if(contactForm) {
+                    contactForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        formStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim pesan...';
+                        formStatus.style.color = '#f1fa8c';
+
+                        setTimeout(() => {
+                            formStatus.innerHTML = '<i class="fas fa-check-circle"></i> Pesan berhasil terkirim! Terima kasih.';
+                            formStatus.style.color = '#50fa7b';
+                            contactForm.reset();
+                            setTimeout(() => { formStatus.innerHTML = ''; }, 5000);
+                        }, 2000);
+                    });
+                }
+
+                const currentYearSpan = document.getElementById('current-year');
+                if(currentYearSpan) currentYearSpan.textContent = new Date().getFullYear();
+            }
+        });
+    </script>
+</body>
+</html>
